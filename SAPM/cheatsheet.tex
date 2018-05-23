@@ -6,9 +6,11 @@
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage{color,graphicx,overpic}
 \usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{adjustbox}
 
 
-\pdfinfo{
+\pdfinfo{%
   /Title (example.pdf)
   /Creator (TeX)
   /Producer (pdfTeX 1.40.0)
@@ -19,12 +21,13 @@
 % This sets page margins to .5 inch if using letter paper, and to 1cm
 % if using A4 paper. (This probably isn't strictly necessary.)
 % If using another size paper, use default 1cm margins.
-\ifthenelse{\lengthtest { \paperwidth = 11in}}
+\ifthenelse{\lengthtest{ \paperwidth = 11in}}
     { \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
     {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
         {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
         {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
     }
+\newcommand{\printvalues}{topsep=\the\topsep; itemsep=\the\itemsep; parsep=\the\parsep; partopsep=\the\partopsep}
 
 % Turn off header and footer
 \pagestyle{empty}
@@ -75,63 +78,249 @@
 \setlength{\columnsep}{2pt}
 
 \section{Common Quality Attributes}
-\begin{itemize}
-\item Availability - Need to be there when required i.e can always get a call through
-\item Performance - Control resource demand tactics i.e robot voice doesn't start mid call
-\item Modifiability - Can change an update system i.e want to add video calls
-\item Reliability - System does not fail i.e call does not drop
-\item Security - System is not vunerable i.e. people can't listen in
-\item Testability - Possible to test in any way required
-\end{itemize}
+\begin{tabular}{l l}
+  Availability & Need to be there when required i.e.\ can always get a call through \\
+  \midrule
+  Performance & Control resource demand tactics i.e.\ robot voice doesn't start mid call \\
+  \midrule
+  Modifiability & Can change an update system i.e.\ want to add video calls \\
+  \midrule
+  Reliability & System does not fail i.e.\ call does not drop \\
+  \midrule
+  Security & System is not vulnerable i.e.\ people can't listen in \\
+  \midrule
+  Testability & Possible to test in any way required \\
+\end{tabular}
 
 \section{Common Stakeholders}
 \begin{itemize}
-\item User
-\item Service Provider
-\item Analysis
-\item Developer
+    \setlength{\itemsep}{0.05em}
+  \item User
+  \item Service Provider
+  \item Analysis
+  \item Developer
 \end{itemize}
 
 \section{Common Design Patterns}
-\begin{itemize}
-\item Layered - distict layers, can only interect with adjacent layers
-\item Model-View-Controller (MVC) - UI and application isolation, user intarface changes often
-\item Blackboard - think /r/place
-\item N-tier Architecture - See Layered
-\end{itemize}
+\begin{tabular}{l l}
+  Layered & distinct layers, can only interact with adjacent layers \\
+  \midrule
+  MVC & UI and application isolation, user interface changes often \\
+  \midrule
+  Blackboard & think /r/place \\
+  \midrule
+  N-tier Architecture & See Layered \\
+\end{tabular}
 
 \section{Types of Structures}
+\begin{tabular}{l l}
+  Modular & Static structures, focus on how functionality is divided up \\
+  \midrule
+  Component \& Connector & Runtime structures focused on interactions \\
+  \midrule
+  Allocation & Mapping to Environments \\
+\end{tabular}
+
+\section{Scenarios}
+\begin{tabular}{l l}
+  \toprule
+  \textbf{Portion of Scenario} & \textbf{Possible Values} \\
+  \midrule
+  Source & Internal or external to the system (e.g.\ user) \\
+  Stimulus & Arrival of a periodic, sporadic or stochastic event \\
+  Artefact & System or one or more components in the system \\
+  Environment & Operational mode: normal, emergency, peak overload, overload \\
+  Response & Process events, change level of service \\
+  Response Measure & Latency, deadline, throughput, jitter, miss rate \\
+  \bottomrule
+\end{tabular}
+
+\section{Availability}
+\subsection{Acronyms \& Measures}
 \begin{itemize}
-\item Modular - static structures, focus on how functionality is divided up
-\item Component \& Connector - Runtime tructures focused on interactions
-\item Allocation - Mapping to Environments
+  \setlength{\itemsep}{0.05em}
+  \item mtbf --- mean time between failures
+  \item mttr --- mean time to repair
+  \item usually defined to be the probability it will be there when you ask it to work:
+    \[\frac{mtbf}{mtbf + mttr}\]
+\end{itemize}
+
+\subsection{Availability Tactics}
+\subsubsection{Fault Detection}
+\begin{itemize}
+    \setlength\itemsep{0.1em}
+  \item Ping/Echo;
+  \item System monitor (watchdog/heartbeat);
+  \item Exception detection (system detections);
+  \item Voting (triple modular redundancy)
+\end{itemize}
+
+\subsubsection{Fault Recovery}
+
+\subsubsection{\textit{Preparation \& Recovery}}
+\begin{itemize}
+    \setlength\itemsep{0.1em}
+ \item Active/Passive Redundancy;
+ \item Spare;
+ \item Exception handling (error codes, exception classes);
+ \item Software upgrade
+\end{itemize}
+
+\subsubsection{\textit{Reintroduction}}
+\begin{itemize}
+    \setlength\itemsep{0.1em}
+ \item Shadow;
+ \item State Resynchronisation (graceful restart);
+ \item Rollback (un/co-ordinated checkpointing);
+ \item Escalating restart;
+ \item Non-stop forwarding
+\end{itemize}
+
+\subsubsection{Fault Prevention}
+\begin{itemize}
+    \setlength\itemsep{0.1em}
+ \item Removal from service;
+ \item Transactions (ACID);
+ \item Process monitor
+ \item Exception prevention (exception classes; smart pointers; wrappers)
+\end{itemize}
+
+\section{Performance Tactics}
+\subsection{Control Resource Demand}
+\begin{itemize}
+    \setlength\itemsep{0.1em}
+  \item Manage sampling rate
+  \item Limit event response
+  \item Prioritise events (priority queues)
+  \item Reduce overhead
+  \item Bound execution times (timeouts)
+  \item Increase resource efficiency (CDNs?)
+\end{itemize}
+
+\subsection{Manage Resources}
+\begin{itemize}
+    \setlength\itemsep{0.1em}
+  \item Increase resources (vertical scaling)
+  \item Introduce concurrency (horizontal scaling)
+  \item Replication
+  \item Bound queue sizes
+  \item Schedule resources (auto-scaling?)
+\end{itemize}
+
+\section{Modifiability Tactics}
+\subsection{Reduce Size of a Module}
+\begin{itemize}
+  \item Split a Responsibility (Single Responsibility principle)
+\end{itemize}
+
+\subsection{Increase Cohesion}
+\begin{itemize}
+  \item Maintain semantic coherence;
+  \item Abstract common services
+\end{itemize}
+
+\subsection{Reduce Coupling}
+\begin{itemize}
+  \item Use encapsulation, intermediaries \& wrappers;
+  \item Raise abstraction level;
+  \item Restrict communication paths
+\end{itemize}
+
+\subsection{Defer Binding}
+\begin{itemize}
+  \item Use runtime registration;
+  \item Use start-up time binding; 
+  \item Use runtime binding 
+\end{itemize}
+
+\section{Security Tactics}
+\subsection{Detect Attacks}
+\begin{itemize}
+  \item Detect intrusion (IDS)
+  \item Detect service denial (DoS)
+  \item Verify message integrity (checksums?)
+  \item Detect message delay
+\end{itemize}
+
+\subsection{Resist Attacks}%
+\label{sub:resist_attacks}
+\begin{itemize}
+  \item Identify actors (Accountability)
+  \item Authenticate actors
+  \item Authorise actors
+  \item Limit access
+  \item Limit exposure
+  \item Encrypt data
+  \item Separate entities
+  \item Change default settings
+\end{itemize}
+
+\subsection{React to Attacks}%
+\label{sub:react_to_attacks}
+\begin{itemize}
+  \item Revoke access
+  \item Lock computer
+  \item Inform actors
+\end{itemize}
+
+\subsection{Recover from Attacks}%
+\label{sub:recover_from_attacks}
+\begin{itemize}
+  \item Maintain audit trail
+  \item Restore (See Availability tactics)
+\end{itemize}
+
+\section{Testability Tactics}%
+\label{sec:testability_tactics}
+
+\subsection{Control and Observe System State}%
+\label{sub:control_and_observe_system_state}
+\begin{itemize}
+  \item Specialised interfaces
+  \item Record/playback
+  \item Localise state storage
+  \item Abstract data sources
+  \item Sandbox
+  \item Executable assertions
+\end{itemize}
+
+\subsection{Limit Complexity}%
+\label{sub:limit_complexity}
+\begin{itemize}
+  \item Limit structural complexity
+  \item Limit non-determinism
 \end{itemize}
 
 \section{Lifecycles}
 \begin{itemize}
-\item V Model
-  \begin{itemize}
-  \item ``Verification \& Validation'' model
-  \item Extension of waterfall model
-  \item Testing planned in parallel with development
-  \item Coding phase joins these two sides
-  \end{itemize}
-\item RUP
-  \begin{itemize}
-  \item ``Rational Unified Process''
-    \item Kind of like a gantt chart
-   \end{itemize}
-\item Spiral Model
-  \begin{itemize}
-  \item Risk driven process model
-  \item Itterative design model
-  \end{itemize}
-\item Agile SCRUM
-  \begin{itemize}
-  \item 2-4 week sprint
-  \item Daily scrum meetings
-  \item Most important issues tackled first as they are on top of backlog
-  \end{itemize}
+    \setlength\itemsep{0.1em}
+  \item V Model
+    \begin{itemize}
+        \setlength\itemsep{0.1em}
+      \item ``Verification \& Validation'' model
+      \item Extension of waterfall model
+      \item Testing planned in parallel with development
+      \item Coding phase joins these two sides
+    \end{itemize}
+  \item RUP
+    \begin{itemize}
+        \setlength\itemsep{0.1em}
+      \item ``Rational Unified Process''
+      \item Kind of like a Gantt chart
+    \end{itemize}
+  \item Spiral Model
+    \begin{itemize}
+        \setlength\itemsep{0.1em}
+      \item Risk driven process model
+      \item Iterative design model
+    \end{itemize}
+  \item Agile SCRUM
+    \begin{itemize}
+        \setlength\itemsep{0.1em}
+      \item 2--4 week sprint
+      \item Daily scrum meetings
+      \item Most important issues tackled first as they are on top of backlog
+    \end{itemize}
 \end{itemize}
 %\section{QA Testing Senarios}
 %\begin{itemize}
